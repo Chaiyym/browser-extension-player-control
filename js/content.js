@@ -1,4 +1,4 @@
-import {METHOD_TAG, sendCommand2Content} from "./module/messageModule.js";
+import {METHOD_TAG} from "./module/messageModule.js";
 
 console.log("content gogogo")
 

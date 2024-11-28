@@ -1,4 +1,4 @@
-import {sendCommand2Content} from './js/module/messageModule.js';
+import {queryOptions, sendCommand2Content} from './js/module/messageModule.js';
 
 chrome.runtime.onInstalled.addListener((details) => {
     console.log(`service-worker gogogo`);
@@ -6,6 +6,6 @@ chrome.runtime.onInstalled.addListener((details) => {
 
 chrome.commands.onCommand.addListener((command) => {
         console.log(`Command "${command}" triggered`);
-        sendCommand2Content(command);
+        sendCommand2Content(queryOptions,command);
     }
 )
