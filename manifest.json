@@ -1,0 +1,68 @@
+{
+  "manifest_version": 3,
+  "name": "v-c",
+  "description": "视频画中画控制",
+  "version": "1.0.0",
+  "author": "chaiyyym",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "type": "module"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "js": [
+        "js/content_main.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "resources": [
+        "js/content.js",
+        "js/module/messageModule.js"
+      ]
+    }
+  ],
+  "commands": {
+    "pip": {
+      "suggested_key": {
+        "default": "Alt+1"
+      },
+      "description": "open pip"
+    },
+    "play_trans": {
+      "suggested_key": {
+        "default": "Alt+2"
+      },
+      "description": "close pip"
+    },
+    "skip": {
+      "suggested_key": {
+        "default": "Alt+3"
+      },
+      "description": "skip 5s"
+    },
+    "back": {
+      "suggested_key": {
+        "default": "Alt+4"
+      },
+      "description": "back 5s"
+    }
+  }
+}
