@@ -29,20 +29,17 @@ document.getElementById(METHOD_TAG.BACK).addEventListener('click', function () {
 const popup2Content = (queryParams, tag) => {
     console.log("popup2Content")
     // console.log(getTabIndex());
-    let index
     chrome.runtime.sendMessage({
         method: METHOD_TAG.GET_INDEX,
-    }, res => {
-        console.log(res)
-        index = res
-    })
-    console.log(index);
-    console.log(chrome.extension.getBackgroundPage());
-    chrome.tabs.query(queryParams, (tabs) => {
-        chrome.tabs.sendMessage(tabs[0].id, {
-            method: tag
+    }, index => {
+        console.log(index)
+        chrome.tabs.query(queryParams, (tabs) => {
+            chrome.tabs.sendMessage(tabs[0].id, {
+                method: tag
+            })
         })
     })
+
 }
 
 
