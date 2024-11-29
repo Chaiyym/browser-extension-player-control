@@ -2,7 +2,7 @@ import {METHOD_TAG,} from './js/module/messageModule.js';
 
 
 //锁定tab index
-let tab_index = 1
+let tab_index=1
 
 //监听快捷键,并发消息给Content.js,使其执行相关命令
 chrome.commands.onCommand.addListener((command) => {

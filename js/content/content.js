@@ -28,6 +28,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             re_bind();
             break;
     }
+    return true
 })
 
 
