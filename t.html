@@ -11,3 +11,6 @@
 </video>
 </body>
 </html>
+chrome.tabs.query({active: true, currentWindow: true, index: 1}, (tabs) => {
+console.log(tabs)
+})

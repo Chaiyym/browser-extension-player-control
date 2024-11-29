@@ -1,5 +1,5 @@
 chrome.runtime.onInstalled.addListener((details) => {
-    console.log(`popup gogogo`);
+    console.log(`popup init`);
 });
 
 

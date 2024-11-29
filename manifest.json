@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "v-c",
+  "name": "player control",
   "description": "视频画中画控制",
   "version": "1.0.0",
-  "author": "chaiyyym",
+  "author": "chaiyym",
   "permissions": [
     "activeTab",
     "scripting",
@@ -21,7 +21,8 @@
   "content_scripts": [
     {
       "js": [
-        "js/content_main.js"
+        "js/content/content_video_ctrl.js",
+        "js/content/content_message.js"
       ],
       "matches": [
         "<all_urls>"
@@ -34,7 +35,6 @@
         "<all_urls>"
       ],
       "resources": [
-        "js/content.js",
         "js/module/messageModule.js"
       ]
     }
