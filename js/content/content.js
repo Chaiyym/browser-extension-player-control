@@ -88,26 +88,3 @@ function re_bind() {
 }
 
 
-//content.js从Background获取tab_indx
-const getTabIndex = () => {
-    console.log("getTabIndex()")
-    let index_a = 0;
-    chrome.runtime.sendMessage({
-        method: METHOD_TAG.GET_INDEX
-    }, res => {
-        console.log(res)
-        index_a = res
-    })
-    return index_a;
-}
-
-//content.js让Background设置tab_indx
-const setTabIndex = (index) => {
-    chrome.runtime.sendMessage({
-        method: METHOD_TAG.SET_INDEX,
-        index: index
-    }, res => {
-    })
-}
-
-

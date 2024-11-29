@@ -21,8 +21,7 @@
   "content_scripts": [
     {
       "js": [
-        "js/content/content_video_ctrl.js",
-        "js/content/content_message.js"
+        "js/content/content.js"
       ],
       "matches": [
         "<all_urls>"
