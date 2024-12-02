@@ -7,7 +7,6 @@
   "permissions": [
     "activeTab",
     "scripting",
-    "storage",
     "tabs"
   ],
   "action": {

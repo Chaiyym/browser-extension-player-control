@@ -1,16 +1,10 @@
-import {METHOD_TAG} from "../js/module/messageModule.js";
-
-let currentWindowTabQuery = {
-    active: true, currentWindow: true
-};
-
+import {METHOD_TAG, currentWindowTabQuery} from "../js/module/messageModule.js";
 
 document.getElementById(METHOD_TAG.RE_BIND).addEventListener('click', function () {
-    // popup2Content(currentWindowTabQuery, METHOD_TAG.RE_BIND)
+    storageTabInfo()
 });
 
 document.getElementById(METHOD_TAG.PIP).addEventListener('click', function () {
-    console.log("PIP clicked")
     popup2Content(METHOD_TAG.PIP)
 });
 
@@ -27,41 +21,44 @@ document.getElementById(METHOD_TAG.BACK).addEventListener('click', function () {
 });
 
 
-const popup2Content = (tag) => {
-    console.log("popup2Content")
-    chrome.runtime.sendMessage({
+async function popup2Content(tag) {
+    let tabInfo = await chrome.runtime.sendMessage({
         method: METHOD_TAG.GET_INDEX,
-    }, index => {
-        console.log(index)
-        let query = {}
-        if (!index) {
-            query = currentWindowTabQuery
-            index = 0
-        }
-        console.log(query);
-        console.log(index)
-        chrome.tabs.query(query, (tabs) => {
-            chrome.tabs.sendMessage(tabs[index].id, {
+    })
+    if (tabInfo?.tabId) {
+        //获取到tabId 直接通知对应tab
+        chrome.tabs.sendMessage(tabInfo.tabId, {
+            method: tag
+        })
+    } else {
+        //没有获取到tabId,通知当前tab,并存储
+        let [tab] = await chrome.tabs.query(currentWindowTabQuery)
+        if (tab) {
+            //通知
+            chrome.tabs.sendMessage(tab.id, {
                 method: tag
             })
-        })
+            //存储
+            chrome.runtime.sendMessage({
+                method: METHOD_TAG.SET_INDEX,
+                tabId: tab.id,
+                windowId: tab.windowId
+            });
+        }
+    }
 
-    })
+}
+
+async function storageTabInfo() {
+    let [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+    if (tab) {
+        chrome.runtime.sendMessage({
+            method: METHOD_TAG.SET_INDEX,
+            tabId: tab.id,
+            windowId: tab.windowId
+        });
+    }
 
 }
 
 
-//Background设置tab_indx
-const getTabIndex = () => {
-    let index
-    console.log("getTabIndex()")
-    chrome.runtime.sendMessage({
-        method: METHOD_TAG.GET_INDEX,
-    }, res => {
-        console.log(res)
-        index = res
-    })
-
-    return index
-
-}

@@ -9,4 +9,8 @@ export const METHOD_TAG = {
 };
 
 
+export const currentWindowTabQuery = {
+    active: true, currentWindow: true
+};
+
 

@@ -1,49 +1,60 @@
-import {METHOD_TAG,} from './js/module/messageModule.js';
+import {currentWindowTabQuery, METHOD_TAG,} from './js/module/messageModule.js';
 
 
-//锁定tab index
-let tab_index=1
+let tabInfo = {
+    tabId: null,
+    windowId: null
+}
 
 //监听快捷键,并发消息给Content.js,使其执行相关命令
 chrome.commands.onCommand.addListener((command) => {
-        console.log("background2Content")
+    execCommand(command)
+})
 
 
-        chrome.tabs.query({}, (tabs) => {
-            chrome.tabs.sendMessage(tabs[tab_index | 0].id, {
-                method: METHOD_TAG
-            }, res => {
-            })
+function execCommand(command) {
+    if (tabInfo?.tabId) {
+        chrome.tabs.sendMessage(tabInfo.tabId, {
+            method: command
+        })
+    } else {
+        console.log("execCommand1")
+        //没有获取到tabId,通知当前tab,并存储
+        chrome.tabs.query(currentWindowTabQuery, ([tab]) => {
+            if (tab) {
+                console.log("execCommand3")
+                //通知
+                chrome.tabs.sendMessage(tab.id, {
+                    method: command
+                })
+                console.log("execCommand4")
+                //存储
+                tabInfo.tabId = tab.tabId;
+                tabInfo.windowId = tab.windowId;
+                console.log("execCommand5")
+            }
         })
     }
-)
+}
 
 
 //监听Content.js的消息,获取和存储共享的页面index
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    console.log("background listener")
-    console.log(message);
     switch (message.method) {
         case METHOD_TAG.GET_INDEX:
-            console.log("GET_INDEX")
-            console.log("background: " + tab_index);
-            sendResponse(tab_index)
+            sendResponse(tabInfo)
             break;
         case METHOD_TAG.SET_INDEX:
-            tab_index = message.index
+            tabInfo = {
+                tabId: null,
+                windowId: null
+            }
+            tabInfo.tabId = message.tabId;
+            tabInfo.windowId = message.windowId;
             break;
     }
     return true;
 })
 
 
-//Background设置tab_indx
-const setTabIndex = (index) => {
-    console.log("setTabIndex()")
-    chrome.runtime.sendMessage({
-        method: METHOD_TAG.SET_INDEX,
-        index: index
-    }, res => {
-    })
-}
 

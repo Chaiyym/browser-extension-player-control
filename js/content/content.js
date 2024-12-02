@@ -10,7 +10,6 @@ const METHOD_TAG = {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log("content listener")
-    console.log(message)
     switch (message.method) {
         case METHOD_TAG.PIP:
             pip();
@@ -38,11 +37,19 @@ function getVideElement() {
 
 function pip() {
     var video = getVideElement();
-    if (document.pictureInPictureElement) {
-        document.exitPictureInPicture();
-    } else {
-        video.requestPictureInPicture()
+    if (!document.pictureInPictureEnabled) {
+        console.log('当前浏览器不支持视频画中画。');
     }
+    if (document.pictureInPictureElement) {
+        console.log("pip1")
+        document.exitPictureInPicture();
+        console.log("pip2")
+    } else {
+        console.log("pip3")
+        video.requestPictureInPicture().catch(console.error);
+        console.log("pip4")
+    }
+    console.log("pip5")
 }
 
 function play_trans() {
