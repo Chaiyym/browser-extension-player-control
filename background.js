@@ -26,7 +26,7 @@ function execCommand(command) {
                     method: command
                 })
                 //存储
-                tabInfo.tabId = tab.tabId;
+                tabInfo.tabId = tab.id;
                 tabInfo.windowId = tab.windowId;
             }
         })
