@@ -18,25 +18,20 @@ function execCommand(command) {
             method: command
         })
     } else {
-        console.log("execCommand1")
         //没有获取到tabId,通知当前tab,并存储
         chrome.tabs.query(currentWindowTabQuery, ([tab]) => {
             if (tab) {
-                console.log("execCommand3")
                 //通知
                 chrome.tabs.sendMessage(tab.id, {
                     method: command
                 })
-                console.log("execCommand4")
                 //存储
                 tabInfo.tabId = tab.tabId;
                 tabInfo.windowId = tab.windowId;
-                console.log("execCommand5")
             }
         })
     }
 }
-
 
 //监听Content.js的消息,获取和存储共享的页面index
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
